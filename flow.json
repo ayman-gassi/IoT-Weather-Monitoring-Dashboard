@@ -1,0 +1,148 @@
+[
+    {
+        "id": "afb966870ff2b012",
+        "type": "tab",
+        "label": "Flow 6",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "fc3432b1156ff9fe",
+        "type": "mqtt in",
+        "z": "afb966870ff2b012",
+        "name": "",
+        "topic": "/Mundiapolis/mesurements",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "92f49f4e9484fee4",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 150,
+        "y": 280,
+        "wires": [
+            [
+                "4030a6b310283180"
+            ]
+        ]
+    },
+    {
+        "id": "9213638d32fc37f9",
+        "type": "debug",
+        "z": "afb966870ff2b012",
+        "name": "debug 6",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 800,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "4030a6b310283180",
+        "type": "json",
+        "z": "afb966870ff2b012",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 430,
+        "y": 280,
+        "wires": [
+            [
+                "bee4a503a0f4cd46"
+            ]
+        ]
+    },
+    {
+        "id": "bee4a503a0f4cd46",
+        "type": "function",
+        "z": "afb966870ff2b012",
+        "name": "function 2",
+        "func": "msg.measurement = \"sensor_data\"; // Name of the measurement/table in InfluxDB\nmsg.payload = {\n    temperature: msg.payload.temperature, // Temperature value\n    humidity: msg.payload.humidity        // Humidity value\n};\nmsg.tags = {\n    sensor: \"DHT22\"  // Optional: Add any tags, like the sensor type or location\n};\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 620,
+        "y": 380,
+        "wires": [
+            [
+                "f94ed0dd72635c65",
+                "9213638d32fc37f9"
+            ]
+        ]
+    },
+    {
+        "id": "f94ed0dd72635c65",
+        "type": "influxdb out",
+        "z": "afb966870ff2b012",
+        "influxdb": "6e48537229353ea1",
+        "name": "",
+        "measurement": "",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "Projet",
+        "bucket": "DHT22",
+        "x": 830,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "92f49f4e9484fee4",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "test.mosquitto.org",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "6e48537229353ea1",
+        "type": "influxdb",
+        "hostname": "127.0.0.1",
+        "port": "8086",
+        "protocol": "http",
+        "database": "database",
+        "name": "influx",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "2.0",
+        "url": "http://localhost:8086",
+        "timeout": "10",
+        "rejectUnauthorized": true
+    }
+]
